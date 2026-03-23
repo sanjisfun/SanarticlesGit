@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GitHub Guide — All About GitHub</title>
+<meta name="description" content="Single-page guide to GitHub: features, uploading files, workflows, security and command cheatsheet." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐙</text></svg>">
+<style>
+  :root{
+    --bg:#0f1113;
+    --card:#161718;
+    --muted:#9aa0a6;
+    --accent:#e6e6e6;
+    --glass: rgba(255,255,255,0.03);
+    --radius:12px;
+    --maxw:1100px;
+    --gap:20px;
+    --accent-2:#bdbdbd;
+    --focus: 2px solid rgba(255,255,255,0.08);
+  }
+  [data-theme="light"]{
+    --bg:#f5f6f7;
+    --card:#ffffff;
+    --muted:#54606a;
+    --accent:#0b0b0b;
+    --glass: rgba(0,0,0,0.03);
+    --accent-2:#3b3b3b;
+    --focus: 2px solid rgba(0,0,0,0.08);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+    background:linear-gradient(180deg,var(--bg),#0b0c0d);
+    color:var(--accent);-webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;line-height:1.5;
+    padding:28px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:var(--gap)}
+  header{
+    display:flex;gap:16px;align-items:center;justify-content:space-between;
+    background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));
+    padding:18px;border-radius:var(--radius);backdrop-filter:blur(6px);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.55);
+  }
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{
+    width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#0b0c0d,#101214);
+    display:grid;place-items:center;font-weight:700;font-size:20px;color:var(--accent);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  h1{font-size:18px;margin:0}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+
+  nav.topnav{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  nav.topnav a, .btn{
+    color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-size:14px;border:1px solid transparent;
+  }
+  nav.topnav a:hover{background:var(--glass);color:var(--accent)}
+  .btn{background:#0b0c0d;color:var(--accent);border:1px solid rgba(255,255,255,0.04);font-weight:600}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+  .theme-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+  .theme-toggle:focus{outline:none;box-shadow:var(--focus)}
+
+  main{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:18px}
+  @media (max-width:980px){main{grid-template-columns:1fr}}
+  .content{background:var(--card);padding:22px;border-radius:12px}
+  .aside{position:sticky;top:26px;height:fit-content;padding:18px;background:var(--card);border-radius:12px}
+  .section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+  .section:last-child{border-bottom:0}
+  h2{margin:0 0 10px 0;font-size:18px}
+  h3{margin:8px 0;font-size:15px}
+  .muted{color:var(--muted);font-size:14px}
+
+  pre.code{
+    background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02));
+    padding:12px;border-radius:8px;overflow:auto;border:1px solid rgba(255,255,255,0.03);
+    color:#d6d6d6;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono",monospace;font-size:13px;
+  }
+  code.inline{background:rgba(255,255,255,0.02);padding:2px 6px;border-radius:6px;color:var(--accent-2);font-family:ui-monospace; font-size:13px}
+
+  ol.steps{padding-left:18px}
+  li.step{margin:10px 0}
+
+  .localnav{display:flex;flex-direction:column;gap:8px}
+  .localnav a{color:var(--muted);text-decoration:none;padding:8px;border-radius:8px}
+  .localnav a:hover{background:var(--glass);color:var(--accent)}
+
+  footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  .badge{display:inline-flex;gap:8px;align-items:center;padding:6px 8px;background:rgba(255,255,255,0.02);border-radius:999px;font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+
+  table.compare{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+  table.compare th, table.compare td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}
+  table.compare th{color:var(--muted);font-weight:600;font-size:13px}
+  table.compare td{vertical-align:top}
+
+  @media (max-width:560px){
+    .logo{width:48px;height:48px}
+    nav.topnav a{padding:6px 8px;font-size:13px}
+  }
+
+  a:focus, button:focus {outline:none;box-shadow:var(--focus);border-radius:8px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">GH</div>
+      <div>
+        <h1>GitHub Guide — All About GitHub</h1>
+        <p class="lead">Features, workflows, uploading files, and security</p>
+      </div>
+    </div>
+
+    <nav class="topnav" aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#features">Features</a>
+      <a href="#upload">Upload</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#best">Best practices</a>
+      <a href="#resources">Resources</a>
+      <a class="btn" id="openGithub" href="https://github.com" target="_blank" rel="noopener">Open GitHub</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">🌓</button>
+    </nav>
+  </header>
+
+  <main>
+    <article class="content" id="pageContent" tabindex="-1">
+      <section id="about" class="section" aria-labelledby="aboutTitle">
+        <h2 id="aboutTitle">What is GitHub</h2>
+        <p class="muted">GitHub is a cloud platform for hosting git repositories, collaborating via pull requests, tracking work with issues and projects, and automating CI/CD using Actions. Suitable for personal projects, teams, and enterprises.</p>
+      </section>
+
+      <section id="features" class="section" aria-labelledby="featuresTitle">
+        <h2 id="featuresTitle">Key features</h2>
+        <ul>
+          <li><strong>Repositories:</strong> code, history and versions.</li>
+          <li><strong>Branching & Pull Requests:</strong> code review and discussion.</li>
+          <li><strong>Issues & Projects:</strong> planning and tracking work.</li>
+          <li><strong>Actions:</strong> CI/CD automation and deployment.</li>
+          <li><strong>Security:</strong> Dependabot, secret and code scanning.</li>
+          <li><strong>Pages & Wiki:</strong> documentation hosting and static sites.</li>
+        </ul>
+      </section>
+
+      <section id="upload" class="section" aria-labelledby="uploadTitle">
+        <h2 id="uploadTitle">How to upload files — options and comparison</h2>
+        <table class="compare" role="table" aria-label="Upload methods comparison">
+          <thead>
+            <tr><th>Method</th><th>When to use</th><th>Steps (summary)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Web UI</strong></td>
+              <td>Small edits, README, single files</td>
+              <td>Repo → Add file → Upload files → Commit</td>
+            </tr>
+            <tr>
+              <td><strong>Git (local)</strong></td>
+              <td>Full development, history, branches</td>
+              <td>git init/clone → add/commit → remote add → push</td>
+            </tr>
+            <tr>
+              <td><strong>GitHub CLI (gh)</strong></td>
+              <td>Terminal workflows, PRs/issues from CLI</td>
+              <td>gh auth login → gh repo create → git push</td>
+            </tr>
+            <tr>
+              <td><strong>Git LFS</strong></td>
+              <td>Large binaries (>100MB)</td>
+              <td>git lfs install → git lfs track → add/commit → push</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Detailed steps</h3>
+        <h4>Via web</h4>
+        <ol class="steps">
+          <li class="step"><strong>Create a repository:</strong> GitHub → New repository → name + visibility + init README (optional).</li>
+          <li class="step"><strong>Upload files:</strong> Add file → Upload files → drag & drop or select → Commit.</li>
+        </ol>
+
+        <h4>Via Git (recommended)</h4>
+        <pre class="code" aria-label="Git commands example">
+# initialize and first commit
+git init
+git add .
+git commit -m "Initial commit"
+
+# add remote and push
+git remote add origin https://github.com/USERNAME/REPO.git
+git branch -M main
+git push -u origin main
+        </pre>
+
+        <h4>GitHub CLI</h4>
+        <pre class="code">gh auth login
+gh repo create my-repo --public --source=. --push</pre>
+
+        <h4>Git LFS (if needed)</h4>
+        <pre class="code">git lfs install
+git lfs track "*.bin"
+git add .gitattributes
+git add bigfile.bin
+git commit -m "Add large file"
+git push</pre>
+      </section>
+
+      <section id="workflow" class="section" aria-labelledby="workflowTitle">
+        <h2 id="workflowTitle">Example workflow and example GitHub Actions workflow</h2>
+        <h3>Simplified Git flow</h3>
+        <ol class="steps">
+          <li class="step"><strong>main:</strong> stable branch, releases.</li>
+          <li class="step"><strong>feature/*:</strong> work on features.</li>
+          <li class="step"><strong>PR:</strong> open a pull request → review → CI → merge.</li>
+          <li class="step"><strong>Release:</strong> tag and deploy from main.</li>
+        </ol>
+
+        <h3>Example .github/workflows/ci.yml</h3>
+        <pre class="code" aria-label="Workflow example">
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm test
+        env:
+          CI: true
+</pre>
+      </section>
+
+      <section id="best" class="section" aria-labelledby="bestTitle">
+        <h2 id="bestTitle">Best practices</h2>
+        <ul>
+          <li><strong>Small commits:</strong> make clear, atomic changes.</li>
+          <li><strong>Readable messages:</strong> describe why, not just what.</li>
+          <li><strong>.gitignore:</strong> exclude build artifacts and secrets.</li>
+          <li><strong>Secrets:</strong> use GitHub Secrets for CI.</li>
+          <li><strong>Automated tests:</strong> run tests in Actions on every PR.</li>
+        </ul>
+      </section>
+
+      <section id="security" class="section" aria-labelledby="securityTitle">
+        <h2 id="securityTitle">Security</h2>
+        <ul>
+          <li><strong>2FA:</strong> enable two-factor authentication.</li>
+          <li><strong>Dependabot:</strong> automatic dependency updates.</li>
+          <li><strong>Code scanning:</strong> static analysis and secret scanning.</li>
+          <li><strong>Branch protection:</strong> protected branches and required reviews.</li>
+        </ul>
+      </section>
+
+      <section id="resources" class="section" aria-labelledby="resourcesTitle">
+        <h2 id="resourcesTitle">Resources & cheatsheet</h2>
+        <ul>
+          <li>Official Git — commands and concepts.</li>
+          <li>GitHub Docs — comprehensive docs for features.</li>
+          <li>Actions Marketplace — reusable workflow steps.</li>
+        </ul>
+
+        <h3>Cheatsheet</h3>
+        <pre class="code"># clone
+git clone https://github.com/USER/REPO.git
+
+# branches
+git checkout -b feature/name
+git branch
+
+# commit & push
+git add .
+git commit -m "description"
+git push</pre>
+      </section>
+
+      <footer>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div class="meta">
+            <span class="badge" aria-hidden="true">GitHub Guide • 2026</span>
+            <span style="color:var(--muted);margin-left:6px">Ready for quick start</span>
+          </div>
+          <div style="color:var(--muted);font-size:13px">Responsive, accessible and ready to use</div>
+        </div>
+      </footer>
+    </article>
+
+    <aside class="aside" aria-label="Sidebar">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <strong>Navigation</strong>
+        <a class="btn ghost" href="#pageContent">Top</a>
+      </div>
+
+      <nav class="localnav" aria-label="Local navigation">
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#upload">Upload</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#best">Best practices</a>
+        <a href="#security">Security</a>
+        <a href="#resources">Resources</a>
+      </nav>
+
+      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px">
+        <h3 style="margin:0 0 8px 0">Quick actions</h3>
+        <a class="btn" href="https://github.com/new" target="_blank" rel="noopener">Create repository</a>
+        <div style="height:8px"></div>
+        <a class="btn ghost" href="https://docs.github.com" target="_blank" rel="noopener">Documentation</a>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+  (function(){
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const href = a.getAttribute('href');
+        if(!href || href === '#') return;
+        const el = document.querySelector(href);
+        if(el){
+          e.preventDefault();
+          el.scrollIntoView({behavior:'smooth',block:'start'});
+          setTimeout(()=>{ el.setAttribute('tabindex','-1'); el.focus({preventScroll:true}); }, 300);
+          history.replaceState(null, '', href);
+        }
+      });
+    });
+
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    const stored = localStorage.getItem('theme');
+    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    const initTheme = stored || (prefersLight ? 'light' : 'dark');
+    if(initTheme === 'light') root.setAttribute('data-theme','light');
+
+    function toggleTheme(){
+      const now = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      if(now === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+      localStorage.setItem('theme', now);
+    }
+    toggle.addEventListener('click', toggleTheme);
+
+    document.getElementById('openGithub').addEventListener('click', function(){ /* noop */ });
+
+    document.addEventListener('keydown', (e)=>{
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+        e.preventDefault();
+        document.getElementById('openGithub').focus();
+      }
+    });
+  })();
+</script>
+</body>
+</html>

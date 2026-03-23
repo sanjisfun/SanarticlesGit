@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GitHub Guide — Всё о GitHub</title>
+<meta name="description" content="Полный одностраничный справочник по GitHub: функции, загрузка файлов, рабочие процессы, безопасность и примеры команд." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐙</text></svg>">
+<style>
+  :root{
+    --bg:#0f1113;
+    --card:#161718;
+    --muted:#9aa0a6;
+    --accent:#e6e6e6;
+    --glass: rgba(255,255,255,0.03);
+    --radius:12px;
+    --maxw:1100px;
+    --gap:20px;
+    --accent-2:#bdbdbd;
+    --focus: 2px solid rgba(255,255,255,0.08);
+  }
+  [data-theme="light"]{
+    --bg:#f5f6f7;
+    --card:#ffffff;
+    --muted:#54606a;
+    --accent:#0b0b0b;
+    --glass: rgba(0,0,0,0.03);
+    --accent-2:#3b3b3b;
+    --focus: 2px solid rgba(0,0,0,0.08);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+    background:linear-gradient(180deg,var(--bg),#0b0c0d);
+    color:var(--accent);-webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;line-height:1.5;
+    padding:28px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:var(--gap)}
+  header{
+    display:flex;gap:16px;align-items:center;justify-content:space-between;
+    background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));
+    padding:18px;border-radius:var(--radius);backdrop-filter:blur(6px);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.55);
+  }
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{
+    width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#0b0c0d,#101214);
+    display:grid;place-items:center;font-weight:700;font-size:20px;color:var(--accent);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  h1{font-size:18px;margin:0}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+
+  nav.topnav{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  nav.topnav a, .btn{
+    color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-size:14px;border:1px solid transparent;
+  }
+  nav.topnav a:hover{background:var(--glass);color:var(--accent)}
+  .btn{background:#0b0c0d;color:var(--accent);border:1px solid rgba(255,255,255,0.04);font-weight:600}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+  .theme-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+  .theme-toggle:focus{outline:none;box-shadow:var(--focus)}
+
+  main{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:18px}
+  @media (max-width:980px){main{grid-template-columns:1fr}}
+  .content{background:var(--card);padding:22px;border-radius:12px}
+  .aside{position:sticky;top:26px;height:fit-content;padding:18px;background:var(--card);border-radius:12px}
+  .section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+  .section:last-child{border-bottom:0}
+  h2{margin:0 0 10px 0;font-size:18px}
+  h3{margin:8px 0;font-size:15px}
+  .muted{color:var(--muted);font-size:14px}
+
+  pre.code{
+    background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02));
+    padding:12px;border-radius:8px;overflow:auto;border:1px solid rgba(255,255,255,0.03);
+    color:#d6d6d6;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono",monospace;font-size:13px;
+  }
+  code.inline{background:rgba(255,255,255,0.02);padding:2px 6px;border-radius:6px;color:var(--accent-2);font-family:ui-monospace; font-size:13px}
+
+  ol.steps{padding-left:18px}
+  li.step{margin:10px 0}
+
+  .localnav{display:flex;flex-direction:column;gap:8px}
+  .localnav a{color:var(--muted);text-decoration:none;padding:8px;border-radius:8px}
+  .localnav a:hover{background:var(--glass);color:var(--accent)}
+
+  footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  .badge{display:inline-flex;gap:8px;align-items:center;padding:6px 8px;background:rgba(255,255,255,0.02);border-radius:999px;font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+
+  /* table for comparison */
+  table.compare{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+  table.compare th, table.compare td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}
+  table.compare th{color:var(--muted);font-weight:600;font-size:13px}
+  table.compare td{vertical-align:top}
+
+  /* small screens fixes */
+  @media (max-width:560px){
+    .logo{width:48px;height:48px}
+    nav.topnav a{padding:6px 8px;font-size:13px}
+  }
+
+  /* accessibility focus */
+  a:focus, button:focus {outline:none;box-shadow:var(--focus);border-radius:8px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">GH</div>
+      <div>
+        <h1>GitHub Guide — Всё о GitHub</h1>
+        <p class="lead">Функции, рабочие процессы, загрузка файлов, безопасность</p>
+      </div>
+    </div>
+
+    <nav class="topnav" aria-label="Главная навигация">
+      <a href="#about">О GitHub</a>
+      <a href="#features">Функции</a>
+      <a href="#upload">Загрузка</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#best">Практики</a>
+      <a href="#resources">Ресурсы</a>
+      <a class="btn" id="openGithub" href="https://github.com" target="_blank" rel="noopener">Открыть GitHub</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">🌓</button>
+    </nav>
+  </header>
+
+  <main>
+    <article class="content" id="pageContent" tabindex="-1">
+      <section id="about" class="section" aria-labelledby="aboutTitle">
+        <h2 id="aboutTitle">Что такое GitHub</h2>
+        <p class="muted">GitHub — облачная платформа для размещения git-репозиториев, совместной разработки, обзора кода (pull requests), управления задачами (issues) и автоматизации CI/CD с помощью Actions. Подходит для личных проектов, команд и предприятий.</p>
+      </section>
+
+      <section id="features" class="section" aria-labelledby="featuresTitle">
+        <h2 id="featuresTitle">Ключевые функции</h2>
+        <ul>
+          <li><strong>Репозитории:</strong> код, история и версии.</li>
+          <li><strong>Ветвление и Pull Requests:</strong> кодовые ревью и обсуждения.</li>
+          <li><strong>Issues & Projects:</strong> планирование и управление задачами.</li>
+          <li><strong>Actions:</strong> автоматизация CI/CD и deployment.</li>
+          <li><strong>Security:</strong> Dependabot, secret scanning, проверки кода.</li>
+          <li><strong>Pages & Wiki:</strong> хостинг документации и статических сайтов.</li>
+        </ul>
+      </section>
+
+      <section id="upload" class="section" aria-labelledby="uploadTitle">
+        <h2 id="uploadTitle">Как загружать файлы — варианты и сравнение</h2>
+        <table class="compare" role="table" aria-label="Сравнение способов загрузки">
+          <thead>
+            <tr><th>Способ</th><th>Когда использовать</th><th>Шаги (сокращённо)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Веб-интерфейс</strong></td>
+              <td>Мелкие правки, README, одиночные файлы</td>
+              <td>Repo → Add file → Upload files → Commit</td>
+            </tr>
+            <tr>
+              <td><strong>Git (локально)</strong></td>
+              <td>Полноценная разработка, история, ветки</td>
+              <td>git init/clone → add/commit → remote add → push</td>
+            </tr>
+            <tr>
+              <td><strong>GitHub CLI (gh)</strong></td>
+              <td>Терминал-ориентированные workflow, PR/issue из CLI</td>
+              <td>gh auth login → gh repo create → git push</td>
+            </tr>
+            <tr>
+              <td><strong>Git LFS</strong></td>
+              <td>Большие бинарники (>100MB)</td>
+              <td>git lfs install → git lfs track → add/commit → push</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Подробные инструкции</h3>
+        <h4>Через веб</h4>
+        <ol class="steps">
+          <li class="step"><strong>Создать репозиторий:</strong> GitHub → New repository → имя + visibility + Init README (опционально).</li>
+          <li class="step"><strong>Загрузить:</strong> Add file → Upload files → перетащить или выбрать → Commit.</li>
+        </ol>
+
+        <h4>Через Git (рекомендуемый)</h4>
+        <pre class="code" aria-label="Пример git команд">
+# инициализация и первый коммит
+git init
+git add .
+git commit -m "Initial commit"
+
+# подключить удалённый и отправить
+git remote add origin https://github.com/USERNAME/REPO.git
+git branch -M main
+git push -u origin main
+        </pre>
+
+        <h4>GitHub CLI</h4>
+        <pre class="code">gh auth login
+gh repo create my-repo --public --source=. --push</pre>
+
+        <h4>Git LFS (если нужно)</h4>
+        <pre class="code">git lfs install
+git lfs track "*.bin"
+git add .gitattributes
+git add bigfile.bin
+git commit -m "Add large file"
+git push</pre>
+      </section>
+
+      <section id="workflow" class="section" aria-labelledby="workflowTitle">
+        <h2 id="workflowTitle">Пример рабочего процесса и пример GitHub Actions workflow</h2>
+        <h3>Упрощённый Git flow</h3>
+        <ol class="steps">
+          <li class="step"><strong>main:</strong> стабильная ветка, релизы.</li>
+          <li class="step"><strong>feature/*:</strong> разработки фич.</li>
+          <li class="step"><strong>PR:</strong> открыть pull request → ревью → CI → merge.</li>
+          <li class="step"><strong>Release:</strong> tag и deploy из main.</li>
+        </ol>
+
+        <h3>Пример .github/workflows/ci.yml</h3>
+        <pre class="code" aria-label="Пример workflow">
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm test
+        env:
+          CI: true
+</pre>
+      </section>
+
+      <section id="best" class="section" aria-labelledby="bestTitle">
+        <h2 id="bestTitle">Лучшие практики</h2>
+        <ul>
+          <li><strong>Малые коммиты:</strong> делайте понятные и атомарные изменения.</li>
+          <li><strong>Читабельные сообщения:</strong> описывайте «почему», а не только «что».</li>
+          <li><strong>.gitignore:</strong> не храните временные файлы и секреты.</li>
+          <li><strong>Secrets:</strong> используйте GitHub Secrets для CI.</li>
+          <li><strong>Авто-тесты:</strong> запускайте тесты в Actions на каждый PR.</li>
+        </ul>
+      </section>
+
+      <section id="security" class="section" aria-labelledby="securityTitle">
+        <h2 id="securityTitle">Безопасность</h2>
+        <ul>
+          <li><strong>2FA:</strong> обязательно включить двухфакторную аутентификацию.</li>
+          <li><strong>Dependabot:</strong> автоматические обновления зависимостей.</li>
+          <li><strong>Code scanning:</strong> статический анализ и secret scanning.</li>
+          <li><strong>Правила ветвления:</strong> protected branches и required reviews.</li>
+        </ul>
+      </section>
+
+      <section id="resources" class="section" aria-labelledby="resourcesTitle">
+        <h2 id="resourcesTitle">Ресурсы и шпаргалка</h2>
+        <ul>
+          <li>Официальный Git — команды и концепции.</li>
+          <li>GitHub Docs — справочник по функционалу.</li>
+          <li>Actions Marketplace — готовые шаги для workflow.</li>
+        </ul>
+
+        <h3>Cheatsheet</h3>
+        <pre class="code"># клонировать
+git clone https://github.com/USER/REPO.git
+
+# ветки
+git checkout -b feature/name
+git branch
+
+# коммиты и отправка
+git add .
+git commit -m "описание"
+git push</pre>
+      </section>
+
+      <footer>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div class="meta">
+            <span class="badge" aria-hidden="true">GitHub Guide • 2026</span>
+            <span style="color:var(--muted);margin-left:6px">Готово для быстрого старта</span>
+          </div>
+          <div style="color:var(--muted);font-size:13px">Адаптивный, доступный и готов к использованию</div>
+        </div>
+      </footer>
+    </article>
+
+    <aside class="aside" aria-label="Сайдбар">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <strong>Навигация</strong>
+        <a class="btn ghost" href="#pageContent">Вверх</a>
+      </div>
+
+      <nav class="localnav" aria-label="Внутренняя навигация">
+        <a href="#about">О GitHub</a>
+        <a href="#features">Функции</a>
+        <a href="#upload">Загрузка</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#best">Практики</a>
+        <a href="#security">Безопасность</a>
+        <a href="#resources">Ресурсы</a>
+      </nav>
+
+      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px">
+        <h3 style="margin:0 0 8px 0">Быстрые действия</h3>
+        <a class="btn" href="https://github.com/new" target="_blank" rel="noopener">Создать репозиторий</a>
+        <div style="height:8px"></div>
+        <a class="btn ghost" href="https://docs.github.com" target="_blank" rel="noopener">Документация</a>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+  (function(){
+    // Плавная прокрутка, улучшенный обход
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const href = a.getAttribute('href');
+        if(!href || href === '#') return;
+        const el = document.querySelector(href);
+        if(el){
+          e.preventDefault();
+          el.scrollIntoView({behavior:'smooth',block:'start'});
+          // установить фокус для доступности
+          setTimeout(()=>{ el.setAttribute('tabindex','-1'); el.focus({preventScroll:true}); }, 300);
+          history.replaceState(null, '', href);
+        }
+      });
+    });
+
+    // Theme: сохраняем выбор в localStorage
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    const stored = localStorage.getItem('theme');
+    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    const initTheme = stored || (prefersLight ? 'light' : 'dark');
+    if(initTheme === 'light') root.setAttribute('data-theme','light');
+
+    function toggleTheme(){
+      const now = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      if(now === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+      localStorage.setItem('theme', now);
+    }
+    toggle.addEventListener('click', toggleTheme);
+
+    // минимальная безопасность: noop при клике на "Открыть GitHub"
+    document.getElementById('openGithub').addEventListener('click', function(){ /* noop */ });
+
+    // keyboard: Home shortcut to top
+    document.addEventListener('keydown', (e)=>{
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+        e.preventDefault();
+        document.getElementById('openGithub').focus();
+      }
+    });
+  })();
+</script>
+</body>
+</html>
