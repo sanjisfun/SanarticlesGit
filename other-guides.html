@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GitHub Advanced Guides — новые гайды</title>
   <meta name="description" content="Новые, расширенные гайды по GitHub: от продвинутого Git до автоматизации, безопасности и экосистемы.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐙</text></svg>">
   <style>
     :root{
       --bg:#0f1113; --card:#161718; --muted:#9aa0a6; --accent:#e6e6e6; --glass: rgba(255,255,255,0.03);
@@ -33,21 +34,15 @@
     nav.topnav a:hover{background:var(--glass);color:var(--accent)}
     .btn{background:#0b0c0d;color:var(--accent);border:1px solid rgba(255,255,255,0.04);font-weight:600}
     .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-    .theme-toggle, .full-guide-link{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:30px;cursor:pointer;color:var(--accent);font-size:14px;text-decoration:none;display:inline-block}
-    .theme-toggle:hover, .full-guide-link:hover{background:var(--glass)}
+    .theme-toggle, .nav-link{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:30px;cursor:pointer;color:var(--accent);font-size:14px;text-decoration:none;display:inline-block}
+    .theme-toggle:hover, .nav-link:hover{background:var(--glass)}
     main{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:18px}
     @media (max-width:980px){main{grid-template-columns:1fr}}
     .content{background:var(--card);padding:28px;border-radius:12px}
     .aside{position:sticky;top:26px;height:fit-content;padding:18px;background:var(--card);border-radius:12px}
-    .section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
-    .section:last-child{border-bottom:0}
-    h2{margin:0 0 10px 0;font-size:20px}
-    h3{margin:8px 0;font-size:16px}
-    .muted{color:var(--muted);font-size:14px}
-    pre.code{
-      background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02)); padding:12px; border-radius:8px; overflow:auto;
-      border:1px solid rgba(255,255,255,0.03); color:#d6d6d6; font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono",monospace; font-size:13px;
-    }
+    .section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}.section:last-child{border-bottom:0}
+    h2{margin:0 0 10px 0;font-size:20px}h3{margin:8px 0;font-size:16px}.muted{color:var(--muted);font-size:14px}
+    pre.code{background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02));padding:12px;border-radius:8px;overflow:auto;border:1px solid rgba(255,255,255,0.03);color:#d6d6d6;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono",monospace;font-size:13px}
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     @media (max-width:760px){.two-col{grid-template-columns:1fr}}
     .note{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;color:var(--muted);font-size:13px;border:1px solid rgba(255,255,255,0.02);margin-top:8px}
@@ -60,7 +55,7 @@
     .resource-card{background:var(--glass);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.05)}
     .resource-card a{font-weight:600;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:8px}
     .resource-card a:hover{text-decoration:underline}
-    /* прелоадер */
+    /* Прелоадер — единый стиль */
     #preloader {
       position: fixed;
       top: 0;
@@ -72,33 +67,75 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 1;
       pointer-events: none;
+      backdrop-filter: blur(2px);
     }
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid rgba(255,255,255,0.1);
-      border-top-color: var(--accent);
+    .loader-content {
+      text-align: center;
+      transform: scale(0.9);
+      animation: popIn 0.4s ease-out forwards;
+    }
+    .loader-logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 28px;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--bg);
+      margin: 0 auto 20px;
+      animation: float 1.5s ease-in-out infinite;
+    }
+    .loader-text {
+      font-size: 14px;
+      letter-spacing: 1px;
+      opacity: 0.8;
+      margin-top: 16px;
+    }
+    .loader-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .loader-dots span {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      animation: bounce 1.4s infinite ease-in-out both;
     }
-    [data-theme="light"] .spinner {
-      border-top-color: var(--accent);
-      border: 4px solid rgba(0,0,0,0.1);
-      border-top-color: #0b0b0b;
+    .loader-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loader-dots span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
 <div id="preloader">
-  <div class="spinner"></div>
+  <div class="loader-content">
+    <div class="loader-logo">🐙</div>
+    <div class="loader-text">Загрузка новых гайдов</div>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
+  </div>
 </div>
-<div class="wrap" style="opacity:0; transition: opacity 0.3s ease;" id="app">
+<div class="wrap" style="opacity:0; transition: opacity 0.5s ease;" id="app">
   <header>
     <div class="brand">
       <div class="logo">GH</div>
@@ -116,51 +153,28 @@
       <a href="#monorepo">Монорепозитории</a>
       <a href="#resources">Ресурсы</a>
       <a class="btn" id="openGithub" href="https://github.com" target="_blank" rel="noopener">Открыть GitHub</a>
-      <a class="full-guide-link" href="Git_Wiki RU.html" target="_blank">📘 Полное рук.</a>
+      <a class="nav-link" href="index.html">📘 Полное руководство</a>
+      <a class="nav-link" href="advanced-guides.html">🚀 Продвинутые гайды</a>
       <button class="theme-toggle" id="themeToggle">🌓 Тема</button>
     </nav>
   </header>
 
   <main>
     <article class="content">
-      <!-- 1. Продвинутый Git -->
-      <section id="git-advanced" class="section">
-        <h2>⚙️ Продвинутые техники Git</h2>
-        <div class="two-col">
-          <div>
-            <h3>🔍 Git bisect</h3>
-            <p>Автоматический поиск коммита, внесшего баг.</p>
-            <pre class="code">git bisect start
+      <section id="git-advanced" class="section"><h2>⚙️ Продвинутые техники Git</h2><div class="two-col"><div><h3>🔍 Git bisect</h3><p>Автоматический поиск коммита, внесшего баг.</p><pre class="code">git bisect start
 git bisect bad HEAD
 git bisect good a1b2c3d
 # тестируем, помечаем git bisect good/bad
-git bisect reset</pre>
-          </div>
-          <div>
-            <h3>🔄 Git worktree</h3>
-            <p>Работа с несколькими ветками одновременно в разных директориях.</p>
-            <pre class="code">git worktree add ../hotfix hotfix-branch
+git bisect reset</pre></div><div><h3>🔄 Git worktree</h3><p>Работа с несколькими ветками одновременно в разных директориях.</p><pre class="code">git worktree add ../hotfix hotfix-branch
 cd ../hotfix
 # работаем
-git worktree remove ../hotfix</pre>
-          </div>
-        </div>
-        <h3>🧹 Очистка истории: BFG Repo-Cleaner</h3>
-        <pre class="code">java -jar bfg.jar --delete-files *.log --delete-folders secrets repo.git
+git worktree remove ../hotfix</pre></div></div><h3>🧹 Очистка истории: BFG Repo-Cleaner</h3><pre class="code">java -jar bfg.jar --delete-files *.log --delete-folders secrets repo.git
 git reflog expire --expire=now --all
-git gc --aggressive --prune=now</pre>
-        <h3>📌 Git Submodules и subtrees</h3>
-        <p>Подключение внешних репозиториев:</p>
-        <pre class="code">git submodule add https://github.com/user/lib.git
+git gc --aggressive --prune=now</pre><h3>📌 Git Submodules и subtrees</h3><p>Подключение внешних репозиториев:</p><pre class="code">git submodule add https://github.com/user/lib.git
 git submodule update --init --recursive
 # или subtree (встроенный код)
-git subtree add --prefix=lib https://github.com/user/lib.git main --squash</pre>
-      </section>
-
-      <!-- 2. GitHub CLI продвинутый -->
-      <section id="cli-advanced" class="section">
-        <h2>⌨️ GitHub CLI (gh) — продвинутое использование</h2>
-        <pre class="code"># установка (macOS)
+git subtree add --prefix=lib https://github.com/user/lib.git main --squash</pre></section>
+      <section id="cli-advanced" class="section"><h2>⌨️ GitHub CLI (gh) — продвинутое использование</h2><pre class="code"># установка (macOS)
 brew install gh
 gh auth login
 
@@ -177,14 +191,8 @@ gh repo clone user/repo -- --depth=1
 gh workflow run ci.yml --ref main -f environment=staging
 
 # Просмотр статистики репозитория
-gh api repos/user/repo/community/profile</pre>
-      </section>
-
-      <!-- 3. GitHub Actions: продвинутые сценарии -->
-      <section id="actions-advanced" class="section">
-        <h2>⚡ GitHub Actions: матрицы, артефакты, среды</h2>
-        <h3>Матрица с переменными окружения</h3>
-        <pre class="code">jobs:
+gh api repos/user/repo/community/profile</pre></section>
+      <section id="actions-advanced" class="section"><h2>⚡ GitHub Actions: матрицы, артефакты, среды</h2><h3>Матрица с переменными окружения</h3><pre class="code">jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -198,18 +206,14 @@ gh api repos/user/repo/community/profile</pre>
           node-version: ${{ matrix.node }}
           cache: 'npm'
       - run: npm ci
-      - run: npm test</pre>
-        <h3>Сохранение и загрузка артефактов</h3>
-        <pre class="code">- uses: actions/upload-artifact@v4
+      - run: npm test</pre><h3>Сохранение и загрузка артефактов</h3><pre class="code">- uses: actions/upload-artifact@v4
   with:
     name: dist
     path: dist/
 - uses: actions/download-artifact@v4
   with:
     name: dist
-    path: ./download</pre>
-        <h3>Ручной запуск с окружениями и защитой веток</h3>
-        <pre class="code">on:
+    path: ./download</pre><h3>Ручной запуск с окружениями и защитой веток</h3><pre class="code">on:
   workflow_dispatch:
     inputs:
       environment:
@@ -221,14 +225,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     steps:
-      - run: echo "Deploy to ${{ github.event.inputs.environment }}"</pre>
-      </section>
-
-      <!-- 4. Безопасность и аудит -->
-      <section id="security-advanced" class="section">
-        <h2>🛡️ GitHub Security: углубленно</h2>
-        <h3>Dependabot + группы обновлений</h3>
-        <pre class="code"># .github/dependabot.yml
+      - run: echo "Deploy to ${{ github.event.inputs.environment }}"</pre></section>
+      <section id="security-advanced" class="section"><h2>🛡️ GitHub Security: углубленно</h2><h3>Dependabot + группы обновлений</h3><pre class="code"># .github/dependabot.yml
 version: 2
 updates:
   - package-ecosystem: "npm"
@@ -240,29 +238,17 @@ updates:
         patterns: ["*"]
     ignore:
       - dependency-name: "lodash"
-        versions: [">=5.0.0"]</pre>
-        <h3>CodeQL — расширенная настройка</h3>
-        <pre class="code">- name: Initialize CodeQL
+        versions: [">=5.0.0"]</pre><h3>CodeQL — расширенная настройка</h3><pre class="code">- name: Initialize CodeQL
   uses: github/codeql-action/init@v3
   with:
     languages: javascript, python
     queries: security-extended, security-and-quality
 - name: Perform CodeQL Analysis
-  uses: github/codeql-action/analyze@v3</pre>
-        <div class="note">⚠️ Включите <strong>secret scanning</strong> в настройках репозитория → Security → Enable secret scanning. Добавьте пользовательские шаблоны для внутренних токенов.</div>
-      </section>
-
-      <!-- 5. GitHub Packages -->
-      <section id="packages" class="section">
-        <h2>📦 GitHub Packages: реестр артефактов</h2>
-        <p>Храните Docker-образы, npm-пакеты, Maven, NuGet прямо в GitHub.</p>
-        <h3>Публикация npm-пакета через Actions</h3>
-        <pre class="code">- name: Publish to GitHub Packages
+  uses: github/codeql-action/analyze@v3</pre><div class="note">⚠️ Включите <strong>secret scanning</strong> в настройках репозитория → Security → Enable secret scanning. Добавьте пользовательские шаблоны для внутренних токенов.</div></section>
+      <section id="packages" class="section"><h2>📦 GitHub Packages: реестр артефактов</h2><p>Храните Docker-образы, npm-пакеты, Maven, NuGet прямо в GitHub.</p><h3>Публикация npm-пакета через Actions</h3><pre class="code">- name: Publish to GitHub Packages
   run: npm publish
   env:
-    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}</pre>
-        <h3>Сборка и публикация Docker-образа</h3>
-        <pre class="code">- name: Log in to GitHub Container Registry
+    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}</pre><h3>Сборка и публикация Docker-образа</h3><pre class="code">- name: Log in to GitHub Container Registry
   uses: docker/login-action@v3
   with:
     registry: ghcr.io
@@ -272,14 +258,8 @@ updates:
   uses: docker/build-push-action@v5
   with:
     push: true
-    tags: ghcr.io/${{ github.repository }}:latest</pre>
-      </section>
-
-      <!-- 6. Монорепозитории и большие проекты -->
-      <section id="monorepo" class="section">
-        <h2>🏗️ Управление монорепозиториями и масштабирование</h2>
-        <p>Инструменты: <strong>Git Submodules, git subtree, Nx, Turborepo</strong>. Пример стратегии с Actions для монорепозитория:</p>
-        <pre class="code">on:
+    tags: ghcr.io/${{ github.repository }}:latest</pre></section>
+      <section id="monorepo" class="section"><h2>🏗️ Управление монорепозиториями и масштабирование</h2><p>Инструменты: <strong>Git Submodules, git subtree, Nx, Turborepo</strong>. Пример стратегии с Actions для монорепозитория:</p><pre class="code">on:
   push:
     paths:
       - 'packages/backend/**'
@@ -296,25 +276,15 @@ jobs:
         with:
           filters: |
             backend: 'packages/backend/**'
-            frontend: 'packages/frontend/**'</pre>
-        <div class="note tip">💡 Используйте <strong>Git LFS</strong> для бинарных ассетов. Настройка:</div>
-        <pre class="code">git lfs track "*.psd" "*.zip"
+            frontend: 'packages/frontend/**'</pre><div class="note tip">💡 Используйте <strong>Git LFS</strong> для бинарных ассетов. Настройка:</div><pre class="code">git lfs track "*.psd" "*.zip"
 git add .gitattributes
-git commit -m "track large files"</pre>
-      </section>
-
-      <!-- 7. GitHub Discussions и сообщество -->
-      <section id="discussions" class="section">
-        <h2>🗣️ GitHub Discussions & Community Health</h2>
-        <p>Активируйте Discussions в настройках репозитория. Создайте шаблоны категорий: Q&A, Ideas, Announcements.</p>
-        <pre class="code"># .github/ISSUE_TEMPLATE/config.yml
+git commit -m "track large files"</pre></section>
+      <section id="discussions" class="section"><h2>🗣️ GitHub Discussions & Community Health</h2><p>Активируйте Discussions в настройках репозитория. Создайте шаблоны категорий: Q&A, Ideas, Announcements.</p><pre class="code"># .github/ISSUE_TEMPLATE/config.yml
 blank_issues_enabled: false
 contact_links:
   - name: Обсуждение на форуме
     url: https://github.com/org/repo/discussions
-    about: Задайте вопрос в Discussions</pre>
-        <p>Автоматическое приветствие новых участников через Actions:</p>
-        <pre class="code">name: Welcome
+    about: Задайте вопрос в Discussions</pre><p>Автоматическое приветствие новых участников через Actions:</p><pre class="code">name: Welcome
 on:
   issues:
     types: [opened]
@@ -325,68 +295,24 @@ jobs:
       - uses: actions/first-interaction@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue-message: "Спасибо за issue!"</pre>
-      </section>
-
-      <!-- 8. Аналитика и мониторинг -->
-      <section id="insights" class="section">
-        <h2>📊 GitHub Insights, метрики и API</h2>
-        <p>Получение статистики через REST API:</p>
-        <pre class="code"># трафик репозитория
+          issue-message: "Спасибо за issue!"</pre></section>
+      <section id="insights" class="section"><h2>📊 GitHub Insights, метрики и API</h2><p>Получение статистики через REST API:</p><pre class="code"># трафик репозитория
 curl -H "Authorization: token YOUR_TOKEN" \
   https://api.github.com/repos/octocat/hello-world/traffic/views
 
 # топ контрибьюторов
 curl -H "Authorization: token YOUR_TOKEN" \
-  https://api.github.com/repos/octocat/hello-world/stats/contributors</pre>
-        <p>Используйте <strong>GitHub Actions</strong> для автоматической публикации отчётов в Discussions.</p>
-      </section>
-
-      <!-- 9. Дополнительные ресурсы -->
-      <section id="resources" class="section">
-        <h2>📚 Полезные ресурсы (расширенные)</h2>
-        <div class="resource-grid">
-          <div class="resource-card"><a href="https://docs.github.com/ru/actions" target="_blank">📖 GitHub Actions Docs</a><div class="muted">Официальная документация по Actions</div></div>
-          <div class="resource-card"><a href="https://cli.github.com/manual/" target="_blank">⌨️ GitHub CLI Manual</a><div class="muted">Полная справка по gh</div></div>
-          <div class="resource-card"><a href="https://docs.github.com/ru/codespaces" target="_blank">☁️ GitHub Codespaces</a><div class="muted">Облачная среда разработки</div></div>
-          <div class="resource-card"><a href="https://github.com/features/security" target="_blank">🛡️ GitHub Security</a><div class="muted">Dependabot, CodeQL, secret scanning</div></div>
-          <div class="resource-card"><a href="https://docs.github.com/ru/packages" target="_blank">📦 GitHub Packages</a><div class="muted">Хранение пакетов</div></div>
-          <div class="resource-card"><a href="https://git-scm.com/book/ru/v2" target="_blank">📘 Pro Git (рус.)</a><div class="muted">Углублённое руководство по Git</div></div>
-        </div>
-      </section>
-
-      <footer>
-        <div class="badge" style="margin-bottom:8px;">✨ Новые гайды по GitHub — без повторения стандартных разделов</div>
-        <div class="muted">GitHub Advanced Guides • 2026 • Продвинутые техники, автоматизация, безопасность</div>
-      </footer>
+  https://api.github.com/repos/octocat/hello-world/stats/contributors</pre><p>Используйте <strong>GitHub Actions</strong> для автоматической публикации отчётов в Discussions.</p></section>
+      <section id="resources" class="section"><h2>📚 Полезные ресурсы (расширенные)</h2><div class="resource-grid"><div class="resource-card"><a href="https://docs.github.com/ru/actions" target="_blank">📖 GitHub Actions Docs</a><div class="muted">Официальная документация по Actions</div></div><div class="resource-card"><a href="https://cli.github.com/manual/" target="_blank">⌨️ GitHub CLI Manual</a><div class="muted">Полная справка по gh</div></div><div class="resource-card"><a href="https://docs.github.com/ru/codespaces" target="_blank">☁️ GitHub Codespaces</a><div class="muted">Облачная среда разработки</div></div><div class="resource-card"><a href="https://github.com/features/security" target="_blank">🛡️ GitHub Security</a><div class="muted">Dependabot, CodeQL, secret scanning</div></div><div class="resource-card"><a href="https://docs.github.com/ru/packages" target="_blank">📦 GitHub Packages</a><div class="muted">Хранение пакетов</div></div><div class="resource-card"><a href="https://git-scm.com/book/ru/v2" target="_blank">📘 Pro Git (рус.)</a><div class="muted">Углублённое руководство по Git</div></div></div></section>
+      <footer><div class="badge" style="margin-bottom:8px;">✨ Новые гайды по GitHub — без повторения стандартных разделов</div><div class="muted">GitHub Advanced Guides • 2026 • Продвинутые техники, автоматизация, безопасность</div></footer>
     </article>
-
     <aside class="aside">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <strong>Навигация</strong>
-        <a class="btn ghost" href="#">Вверх</a>
-      </div>
-      <nav class="localnav">
-        <a href="#git-advanced">Продвинутый Git</a>
-        <a href="#cli-advanced">GitHub CLI</a>
-        <a href="#actions-advanced">Actions</a>
-        <a href="#security-advanced">Безопасность</a>
-        <a href="#packages">Packages</a>
-        <a href="#monorepo">Монорепозитории</a>
-        <a href="#discussions">Discussions</a>
-        <a href="#insights">Аналитика</a>
-        <a href="#resources">Ресурсы</a>
-      </nav>
-      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px">
-        <h3 style="margin:0 0 8px 0">Быстрые действия</h3>
-        <a class="btn" href="https://github.com/new" target="_blank">Создать репозиторий</a>
-        <div style="height:8px"></div>
-        <a class="btn ghost" href="https://docs.github.com" target="_blank">Официальная документация</a>
-      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><strong>Навигация</strong><a class="btn ghost" href="#">Вверх</a></div>
+      <nav class="localnav"><a href="#git-advanced">Продвинутый Git</a><a href="#cli-advanced">GitHub CLI</a><a href="#actions-advanced">Actions</a><a href="#security-advanced">Безопасность</a><a href="#packages">Packages</a><a href="#monorepo">Монорепозитории</a><a href="#discussions">Discussions</a><a href="#insights">Аналитика</a><a href="#resources">Ресурсы</a></nav>
+      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px"><h3 style="margin:0 0 8px 0">Быстрые действия</h3><a class="btn" href="https://github.com/new" target="_blank">Создать репозиторий</a><div style="height:8px"></div><a class="btn ghost" href="https://docs.github.com" target="_blank">Официальная документация</a></div>
     </aside>
   </main>
 </div>
-
 <script>
   window.addEventListener('load', function() {
     const preloader = document.getElementById('preloader');
@@ -395,9 +321,8 @@ curl -H "Authorization: token YOUR_TOKEN" \
     setTimeout(() => {
       preloader.style.display = 'none';
       content.style.opacity = '1';
-    }, 400);
+    }, 500);
   });
-
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
       const href = a.getAttribute('href');
@@ -411,7 +336,6 @@ curl -H "Authorization: token YOUR_TOKEN" \
       }
     });
   });
-
   const root=document.documentElement, toggle=document.getElementById('themeToggle'), stored=localStorage.getItem('theme'), prefersLight=window.matchMedia('(prefers-color-scheme: light)').matches;
   const initTheme = stored || (prefersLight ? 'light' : 'dark');
   if(initTheme === 'light') root.setAttribute('data-theme','light');
