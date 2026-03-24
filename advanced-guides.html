@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GitHub Extended Guides — продвинутые гайды</title>
   <meta name="description" content="Продвинутые гайды по GitHub: Copilot, Codespaces, Projects, API, управление командой, интеграции, мониторинг и лучшие практики.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐙</text></svg>">
   <style>
     :root{
       --bg:#0f1113; --card:#161718; --muted:#9aa0a6; --accent:#e6e6e6; --glass: rgba(255,255,255,0.03);
@@ -39,15 +40,9 @@
     @media (max-width:980px){main{grid-template-columns:1fr}}
     .content{background:var(--card);padding:28px;border-radius:12px}
     .aside{position:sticky;top:26px;height:fit-content;padding:18px;background:var(--card);border-radius:12px}
-    .section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
-    .section:last-child{border-bottom:0}
-    h2{margin:0 0 10px 0;font-size:20px}
-    h3{margin:8px 0;font-size:16px}
-    .muted{color:var(--muted);font-size:14px}
-    pre.code{
-      background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02)); padding:12px; border-radius:8px; overflow:auto;
-      border:1px solid rgba(255,255,255,0.03); color:#d6d6d6; font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono",monospace; font-size:13px;
-    }
+    .section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}.section:last-child{border-bottom:0}
+    h2{margin:0 0 10px 0;font-size:20px}h3{margin:8px 0;font-size:16px}.muted{color:var(--muted);font-size:14px}
+    pre.code{background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02));padding:12px;border-radius:8px;overflow:auto;border:1px solid rgba(255,255,255,0.03);color:#d6d6d6;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono",monospace;font-size:13px}
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     @media (max-width:760px){.two-col{grid-template-columns:1fr}}
     .note{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;color:var(--muted);font-size:13px;border:1px solid rgba(255,255,255,0.02);margin-top:8px}
@@ -60,7 +55,7 @@
     .resource-card{background:var(--glass);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.05)}
     .resource-card a{font-weight:600;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:8px}
     .resource-card a:hover{text-decoration:underline}
-    /* прелоадер */
+    /* Прелоадер */
     #preloader {
       position: fixed;
       top: 0;
@@ -72,33 +67,75 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 1;
       pointer-events: none;
+      backdrop-filter: blur(2px);
     }
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid rgba(255,255,255,0.1);
-      border-top-color: var(--accent);
+    .loader-content {
+      text-align: center;
+      transform: scale(0.9);
+      animation: popIn 0.4s ease-out forwards;
+    }
+    .loader-logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 28px;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--bg);
+      margin: 0 auto 20px;
+      animation: float 1.5s ease-in-out infinite;
+    }
+    .loader-text {
+      font-size: 14px;
+      letter-spacing: 1px;
+      opacity: 0.8;
+      margin-top: 16px;
+    }
+    .loader-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .loader-dots span {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      animation: bounce 1.4s infinite ease-in-out both;
     }
-    [data-theme="light"] .spinner {
-      border-top-color: var(--accent);
-      border: 4px solid rgba(0,0,0,0.1);
-      border-top-color: #0b0b0b;
+    .loader-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loader-dots span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
 <div id="preloader">
-  <div class="spinner"></div>
+  <div class="loader-content">
+    <div class="loader-logo">🐙</div>
+    <div class="loader-text">Загрузка продвинутых гайдов</div>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
+  </div>
 </div>
-<div class="wrap" style="opacity:0; transition: opacity 0.3s ease;" id="app">
+<div class="wrap" style="opacity:0; transition: opacity 0.5s ease;" id="app">
   <header>
     <div class="brand">
       <div class="logo">GH</div>
@@ -108,37 +145,30 @@
       </div>
     </div>
     <nav class="topnav">
+      <a href="#copilot">Copilot</a>
+      <a href="#codespaces">Codespaces</a>
+      <a href="#projects">Projects</a>
+      <a href="#api">API</a>
+      <a href="#teams">Управление командами</a>
+      <a href="#integrations">Интеграции</a>
+      <a href="#analytics">Мониторинг</a>
+      <a href="#opensource">Open Source</a>
+      <a href="#big-repos">Большие репозитории</a>
+      <a href="#resources">Ресурсы</a>
+      <a class="btn" id="openGithub" href="https://github.com" target="_blank" rel="noopener">Открыть GitHub</a>
       <a class="nav-link" href="index.html">📘 Полное руководство</a>
       <a class="nav-link" href="other-guides.html">✨ Новые гайды</a>
-      <a class="btn" id="openGithub" href="https://github.com" target="_blank" rel="noopener">Открыть GitHub</a>
       <button class="theme-toggle" id="themeToggle">🌓 Тема</button>
     </nav>
   </header>
 
   <main>
     <article class="content">
-      <!-- 1. GitHub Copilot расширенно -->
-      <section id="copilot" class="section">
-        <h2>🤖 GitHub Copilot: AI-ассистент для разработчиков</h2>
-        <p>Copilot на основе OpenAI Codex предлагает автодополнение кода, целые функции и документацию. Расширенные возможности:</p>
-        <ul>
-          <li><strong>Copilot Chat</strong> (в VS Code, JetBrains) — задавайте вопросы, объясняйте код, генерируйте тесты.</li>
-          <li><strong>Copilot для команд</strong> — настройка политик, управление лицензиями в организации.</li>
-          <li><strong>Советы:</strong> используйте комментарии для описания намерений, Copilot генерирует реализацию.</li>
-        </ul>
-        <pre class="code"># Пример: сгенерировать функцию на Python
-# Напишите комментарий:
+      <section id="copilot" class="section"><h2>🤖 GitHub Copilot: AI-ассистент для разработчиков</h2><p>Copilot на основе OpenAI Codex предлагает автодополнение кода, целые функции и документацию. Расширенные возможности:</p><ul><li><strong>Copilot Chat</strong> (в VS Code, JetBrains) — задавайте вопросы, объясняйте код, генерируйте тесты.</li><li><strong>Copilot для команд</strong> — настройка политик, управление лицензиями в организации.</li><li><strong>Советы:</strong> используйте комментарии для описания намерений, Copilot генерирует реализацию.</li></ul><pre class="code"># Пример: сгенерировать функцию на Python
 # функция, которая принимает список чисел и возвращает только четные
 def get_even_numbers(numbers):
-    return [n for n in numbers if n % 2 == 0]</pre>
-        <div class="note tip">💡 Бесплатно для студентов и мейнтейнеров open-source через GitHub Education.</div>
-      </section>
-
-      <!-- 2. GitHub Codespaces -->
-      <section id="codespaces" class="section">
-        <h2>☁️ GitHub Codespaces: облачная среда разработки</h2>
-        <p>Мгновенный доступ к VS Code в браузере с предустановленными зависимостями. Настройка через <code>.devcontainer/devcontainer.json</code>.</p>
-        <pre class="code">{
+    return [n for n in numbers if n % 2 == 0]</pre><div class="note tip">💡 Бесплатно для студентов и мейнтейнеров open-source через GitHub Education.</div></section>
+      <section id="codespaces" class="section"><h2>☁️ GitHub Codespaces: облачная среда разработки</h2><p>Мгновенный доступ к VS Code в браузере с предустановленными зависимостями. Настройка через <code>.devcontainer/devcontainer.json</code>.</p><pre class="code">{
   "name": "My Project",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
   "features": {
@@ -150,16 +180,8 @@ def get_even_numbers(numbers):
       "extensions": ["dbaeumer.vscode-eslint"]
     }
   }
-}</pre>
-        <p>Запускайте из любого репозитория, делитесь ссылками на codespace, восстанавливайте состояние. Для организаций — политики использования и безопасность.</p>
-      </section>
-
-      <!-- 3. GitHub Projects: продвинутая автоматизация -->
-      <section id="projects" class="section">
-        <h2>📌 GitHub Projects (Beta) — автоматизация рабочих процессов</h2>
-        <p>Kanban-доски с интеграцией Issues и PR. Настройте автоматические перемещения карточек при изменении статуса.</p>
-        <pre class="code"># Пример workflow: при закрытии issue переместить в колонку "Done"
-name: Move to Done
+}</pre><p>Запускайте из любого репозитория, делитесь ссылками на codespace, восстанавливайте состояние. Для организаций — политики использования и безопасность.</p></section>
+      <section id="projects" class="section"><h2>📌 GitHub Projects (Beta) — автоматизация рабочих процессов</h2><p>Kanban-доски с интеграцией Issues и PR. Настройте автоматические перемещения карточек при изменении статуса.</p><pre class="code">name: Move to Done
 on:
   issues:
     types: [closed]
@@ -170,21 +192,11 @@ jobs:
       - uses: actions/add-to-project@v1.0.0
         with:
           project-url: https://github.com/orgs/ORG/projects/1
-          github-token: ${{ secrets.GITHUB_TOKEN }}</pre>
-        <div class="note">✨ Используйте <strong>Views</strong> (таблицы, дорожные карты) для планирования релизов и отслеживания прогресса.</div>
-      </section>
-
-      <!-- 4. GitHub API и автоматизация -->
-      <section id="api" class="section">
-        <h2>🔌 GitHub API: автоматизация рутины</h2>
-        <p>Создавайте ботов, собирайте метрики, управляйте репозиториями. Поддержка REST и GraphQL.</p>
-        <h3>Python пример: создание issue через PyGithub</h3>
-        <pre class="code">from github import Github
+          github-token: ${{ secrets.GITHUB_TOKEN }}</pre><div class="note">✨ Используйте <strong>Views</strong> (таблицы, дорожные карты) для планирования релизов и отслеживания прогресса.</div></section>
+      <section id="api" class="section"><h2>🔌 GitHub API: автоматизация рутины</h2><p>Создавайте ботов, собирайте метрики, управляйте репозиториями. Поддержка REST и GraphQL.</p><h3>Python пример: создание issue через PyGithub</h3><pre class="code">from github import Github
 g = Github("your_token")
 repo = g.get_repo("user/repo")
-repo.create_issue(title="Bug report", body="Description")</pre>
-        <h3>GraphQL запрос для получения последних коммитов</h3>
-        <pre class="code">{
+repo.create_issue(title="Bug report", body="Description")</pre><h3>GraphQL запрос для получения последних коммитов</h3><pre class="code">{
   repository(owner: "octocat", name: "Hello-World") {
     defaultBranchRef {
       target {
@@ -202,65 +214,16 @@ repo.create_issue(title="Bug report", body="Description")</pre>
       }
     }
   }
-}</pre>
-      </section>
-
-      <!-- 5. Управление командами и организациями -->
-      <section id="teams" class="section">
-        <h2>🏢 Управление командами и правами доступа</h2>
-        <p>Организации позволяют централизовать репозитории, настраивать роли и политики безопасности.</p>
-        <ul>
-          <li><strong>Teams</strong> — группировка пользователей с разными уровнями доступа (read, triage, write, maintain, admin).</li>
-          <li><strong>Enterprise Managed Users</strong> — централизованное управление учетными записями.</li>
-          <li><strong>SSO (SAML)</strong> — защита доступа через корпоративный IdP.</li>
-          <li><strong>Audit log</strong> — отслеживание действий в организации.</li>
-        </ul>
-        <div class="note tip">Используйте <strong>CODEOWNERS</strong> для автоматического назначения ревьюеров на определенные файлы.</div>
-      </section>
-
-      <!-- 6. Интеграции с внешними сервисами -->
-      <section id="integrations" class="section">
-        <h2>🔗 Интеграции: Slack, Jira, Discord, CI/CD</h2>
-        <p>Подключайте GitHub к любимым инструментам для уведомлений, автоматизации и трекинга.</p>
-        <ul>
-          <li><strong>Slack</strong> — уведомления о PR, issues, деплоях через GitHub App или Incoming Webhooks.</li>
-          <li><strong>Jira</strong> — связывайте коммиты и PR с задачами Jira, автоматический переход статусов.</li>
-          <li><strong>Discord</strong> — вебхуки для публикации событий.</li>
-          <li><strong>CI/CD внешние</strong> — Jenkins, CircleCI, GitLab CI могут взаимодействовать через GitHub API.</li>
-        </ul>
-        <pre class="code"># Пример webhook в Slack
+}</pre></section>
+      <section id="teams" class="section"><h2>🏢 Управление командами и правами доступа</h2><p>Организации позволяют централизовать репозитории, настраивать роли и политики безопасности.</p><ul><li><strong>Teams</strong> — группировка пользователей с разными уровнями доступа (read, triage, write, maintain, admin).</li><li><strong>Enterprise Managed Users</strong> — централизованное управление учетными записями.</li><li><strong>SSO (SAML)</strong> — защита доступа через корпоративный IdP.</li><li><strong>Audit log</strong> — отслеживание действий в организации.</li></ul><div class="note tip">Используйте <strong>CODEOWNERS</strong> для автоматического назначения ревьюеров на определенные файлы.</div></section>
+      <section id="integrations" class="section"><h2>🔗 Интеграции: Slack, Jira, Discord, CI/CD</h2><p>Подключайте GitHub к любимым инструментам для уведомлений, автоматизации и трекинга.</p><ul><li><strong>Slack</strong> — уведомления о PR, issues, деплоях через GitHub App или Incoming Webhooks.</li><li><strong>Jira</strong> — связывайте коммиты и PR с задачами Jira, автоматический переход статусов.</li><li><strong>Discord</strong> — вебхуки для публикации событий.</li><li><strong>CI/CD внешние</strong> — Jenkins, CircleCI, GitLab CI могут взаимодействовать через GitHub API.</li></ul><pre class="code"># Пример webhook в Slack
 curl -X POST -H 'Content-type: application/json' \
 --data '{"text":"Новый PR: https://github.com/user/repo/pull/1"}' \
-https://hooks.slack.com/services/.../...</pre>
-      </section>
-
-      <!-- 7. Мониторинг и аналитика -->
-      <section id="analytics" class="section">
-        <h2>📊 Мониторинг: Insights, Graphs, API</h2>
-        <p>Отслеживайте активность, трафик, популярность репозитория.</p>
-        <ul>
-          <li><strong>Insights → Traffic</strong> — просмотры, клонирования, рефереры.</li>
-          <li><strong>Graphs → Contributors</strong> — статистика вклада.</li>
-          <li><strong>API трафика</strong> — автоматический сбор метрик.</li>
-        </ul>
-        <pre class="code"># Получить трафик через API
+https://hooks.slack.com/services/.../...</pre></section>
+      <section id="analytics" class="section"><h2>📊 Мониторинг: Insights, Graphs, API</h2><p>Отслеживайте активность, трафик, популярность репозитория.</p><ul><li><strong>Insights → Traffic</strong> — просмотры, клонирования, рефереры.</li><li><strong>Graphs → Contributors</strong> — статистика вклада.</li><li><strong>API трафика</strong> — автоматический сбор метрик.</li></ul><pre class="code"># Получить трафик через API
 curl -H "Authorization: token YOUR_TOKEN" \
-  https://api.github.com/repos/octocat/Hello-World/traffic/views</pre>
-      </section>
-
-      <!-- 8. Лучшие практики open-source -->
-      <section id="opensource" class="section">
-        <h2>🌍 Open-source best practices</h2>
-        <p>Создайте привлекательный проект для сообщества:</p>
-        <ul>
-          <li><strong>Лицензия</strong> — обязательно добавьте LICENSE (MIT, GPL, Apache).</li>
-          <li><strong>CONTRIBUTING.md</strong> — четкие правила для контрибьюторов.</li>
-          <li><strong>CODE_OF_CONDUCT.md</strong> — безопасная среда.</li>
-          <li><strong>Шаблоны Issue и PR</strong> — упрощают взаимодействие.</li>
-          <li><strong>GitHub Sponsors</strong> — монетизация через спонсорство.</li>
-          <li><strong>Автоматизация</strong> — настройте Dependabot, CodeQL, CI для поддержания качества.</li>
-        </ul>
-        <pre class="code"># Пример шаблона ISSUE_TEMPLATE/bug_report.md
+  https://api.github.com/repos/octocat/Hello-World/traffic/views</pre></section>
+      <section id="opensource" class="section"><h2>🌍 Open-source best practices</h2><p>Создайте привлекательный проект для сообщества:</p><ul><li><strong>Лицензия</strong> — обязательно добавьте LICENSE (MIT, GPL, Apache).</li><li><strong>CONTRIBUTING.md</strong> — четкие правила для контрибьюторов.</li><li><strong>CODE_OF_CONDUCT.md</strong> — безопасная среда.</li><li><strong>Шаблоны Issue и PR</strong> — упрощают взаимодействие.</li><li><strong>GitHub Sponsors</strong> — монетизация через спонсорство.</li><li><strong>Автоматизация</strong> — настройте Dependabot, CodeQL, CI для поддержания качества.</li></ul><pre class="code"># Пример шаблона ISSUE_TEMPLATE/bug_report.md
 ---
 name: Bug report
 about: Сообщить об ошибке
@@ -272,20 +235,8 @@ assignees: ''
 Четкое описание проблемы.
 
 **Как воспроизвести**
-Шаги для воспроизведения.</pre>
-      </section>
-
-      <!-- 9. Работа с большими репозиториями -->
-      <section id="big-repos" class="section">
-        <h2>📦 Git LFS, sparse-checkout, submodules</h2>
-        <p>Управление большими файлами и монорепозиториями.</p>
-        <ul>
-          <li><strong>Git LFS</strong> — замена бинарных файлов на указатели.</li>
-          <li><strong>sparse-checkout</strong> — клонирование только нужных поддиректорий.</li>
-          <li><strong>Submodules</strong> — подключение внешних репозиториев с фиксированными версиями.</li>
-          <li><strong>subtree</strong> — альтернатива submodules, встраивание кода в основной репозиторий.</li>
-        </ul>
-        <pre class="code"># Настройка Git LFS
+Шаги для воспроизведения.</pre></section>
+      <section id="big-repos" class="section"><h2>📦 Git LFS, sparse-checkout, submodules</h2><p>Управление большими файлами и монорепозиториями.</p><ul><li><strong>Git LFS</strong> — замена бинарных файлов на указатели.</li><li><strong>sparse-checkout</strong> — клонирование только нужных поддиректорий.</li><li><strong>Submodules</strong> — подключение внешних репозиториев с фиксированными версиями.</li><li><strong>subtree</strong> — альтернатива submodules, встраивание кода в основной репозиторий.</li></ul><pre class="code"># Настройка Git LFS
 git lfs track "*.psd"
 git add .gitattributes
 git commit -m "Track large files"
@@ -293,55 +244,17 @@ git commit -m "Track large files"
 # Sparse-checkout
 git clone --filter=blob:none --sparse https://github.com/org/repo
 cd repo
-git sparse-checkout set src/docs</pre>
-      </section>
-
-      <!-- 10. Полезные ресурсы -->
-      <section id="resources" class="section">
-        <h2>📚 Дополнительные ресурсы</h2>
-        <div class="resource-grid">
-          <div class="resource-card"><a href="https://docs.github.com/ru/copilot" target="_blank">🤖 GitHub Copilot Docs</a><div class="muted">Официальная документация Copilot</div></div>
-          <div class="resource-card"><a href="https://docs.github.com/ru/codespaces" target="_blank">☁️ GitHub Codespaces</a><div class="muted">Настройка и использование</div></div>
-          <div class="resource-card"><a href="https://docs.github.com/ru/issues/planning-and-tracking-with-projects" target="_blank">📌 GitHub Projects</a><div class="muted">Автоматизация и трекинг</div></div>
-          <div class="resource-card"><a href="https://docs.github.com/ru/rest" target="_blank">🔌 GitHub REST API</a><div class="muted">Полный справочник API</div></div>
-          <div class="resource-card"><a href="https://docs.github.com/ru/graphql" target="_blank">📊 GitHub GraphQL API</a><div class="muted">Гибкие запросы</div></div>
-          <div class="resource-card"><a href="https://opensource.guide/ru/" target="_blank">🌍 Open Source Guides</a><div class="muted">Как вести open-source проекты</div></div>
-        </div>
-      </section>
-
-      <footer>
-        <div class="badge" style="margin-bottom:8px;">🚀 GitHub Extended Guides — Copilot, Codespaces, проекты, API, интеграции</div>
-        <div class="muted">GitHub Extended Guides • 2026 • Продвинутые техники для разработчиков и команд</div>
-      </footer>
+git sparse-checkout set src/docs</pre></section>
+      <section id="resources" class="section"><h2>📚 Дополнительные ресурсы</h2><div class="resource-grid"><div class="resource-card"><a href="https://docs.github.com/ru/copilot" target="_blank">🤖 GitHub Copilot Docs</a><div class="muted">Официальная документация Copilot</div></div><div class="resource-card"><a href="https://docs.github.com/ru/codespaces" target="_blank">☁️ GitHub Codespaces</a><div class="muted">Настройка и использование</div></div><div class="resource-card"><a href="https://docs.github.com/ru/issues/planning-and-tracking-with-projects" target="_blank">📌 GitHub Projects</a><div class="muted">Автоматизация и трекинг</div></div><div class="resource-card"><a href="https://docs.github.com/ru/rest" target="_blank">🔌 GitHub REST API</a><div class="muted">Полный справочник API</div></div><div class="resource-card"><a href="https://docs.github.com/ru/graphql" target="_blank">📊 GitHub GraphQL API</a><div class="muted">Гибкие запросы</div></div><div class="resource-card"><a href="https://opensource.guide/ru/" target="_blank">🌍 Open Source Guides</a><div class="muted">Как вести open-source проекты</div></div></div></section>
+      <footer><div class="badge" style="margin-bottom:8px;">🚀 GitHub Extended Guides — Copilot, Codespaces, проекты, API, интеграции</div><div class="muted">GitHub Extended Guides • 2026 • Продвинутые техники для разработчиков и команд</div></footer>
     </article>
-
     <aside class="aside">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <strong>Навигация</strong>
-        <a class="btn ghost" href="#">Вверх</a>
-      </div>
-      <nav class="localnav">
-        <a href="#copilot">Copilot</a>
-        <a href="#codespaces">Codespaces</a>
-        <a href="#projects">Projects</a>
-        <a href="#api">API & Автоматизация</a>
-        <a href="#teams">Управление командами</a>
-        <a href="#integrations">Интеграции</a>
-        <a href="#analytics">Мониторинг</a>
-        <a href="#opensource">Open Source</a>
-        <a href="#big-repos">Большие репозитории</a>
-        <a href="#resources">Ресурсы</a>
-      </nav>
-      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px">
-        <h3 style="margin:0 0 8px 0">Быстрые действия</h3>
-        <a class="btn" href="https://github.com/new" target="_blank">Создать репозиторий</a>
-        <div style="height:8px"></div>
-        <a class="btn ghost" href="https://docs.github.com" target="_blank">Официальная документация</a>
-      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><strong>Навигация</strong><a class="btn ghost" href="#">Вверх</a></div>
+      <nav class="localnav"><a href="#copilot">Copilot</a><a href="#codespaces">Codespaces</a><a href="#projects">Projects</a><a href="#api">API & Автоматизация</a><a href="#teams">Управление командами</a><a href="#integrations">Интеграции</a><a href="#analytics">Мониторинг</a><a href="#opensource">Open Source</a><a href="#big-repos">Большие репозитории</a><a href="#resources">Ресурсы</a></nav>
+      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px"><h3 style="margin:0 0 8px 0">Быстрые действия</h3><a class="btn" href="https://github.com/new" target="_blank">Создать репозиторий</a><div style="height:8px"></div><a class="btn ghost" href="https://docs.github.com" target="_blank">Официальная документация</a></div>
     </aside>
   </main>
 </div>
-
 <script>
   window.addEventListener('load', function() {
     const preloader = document.getElementById('preloader');
@@ -350,9 +263,8 @@ git sparse-checkout set src/docs</pre>
     setTimeout(() => {
       preloader.style.display = 'none';
       content.style.opacity = '1';
-    }, 400);
+    }, 500);
   });
-
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
       const href = a.getAttribute('href');
@@ -366,7 +278,6 @@ git sparse-checkout set src/docs</pre>
       }
     });
   });
-
   const root=document.documentElement, toggle=document.getElementById('themeToggle'), stored=localStorage.getItem('theme'), prefersLight=window.matchMedia('(prefers-color-scheme: light)').matches;
   const initTheme = stored || (prefersLight ? 'light' : 'dark');
   if(initTheme === 'light') root.setAttribute('data-theme','light');
