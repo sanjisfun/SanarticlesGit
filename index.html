@@ -1,44 +1,67 @@
 <!doctype html>
 <html lang="ru">
 <head>
- <meta name="google-site-verification" content="S4B3xXE4mu5maUveNd813GGaXAiU_Bt147XCZJ2-Lnk" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="google-site-verification" content="S4B3xXE4mu5maUveNd813GGaXAiU_Bt147XCZJ2-Lnk" />
 <title>GitHub Guide — Полное руководство (RU)</title>
-<meta name="description" content="Расширенное одностраничное руководство по Git и GitHub: функции, загрузка файлов, PR, Actions, релизы, пакеты, безопасность, шаблоны и часто встречаемые ошибки." />
+<meta name="description" content="Расширенное руководство по Git и GitHub: функции, загрузка файлов, PR, Actions, релизы, пакеты, безопасность, шаблоны и часто встречаемые ошибки." />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐙</text></svg>">
 <style>
-  :root{
-    --bg:#0f1113;--card:#161718;--muted:#9aa0a6;--accent:#e6e6e6;--glass: rgba(255,255,255,0.03);
-    --radius:12px;--maxw:1200px;--gap:20px;--accent-2:#bdbdbd;--focus: 2px solid rgba(255,255,255,0.08);
+  :root {
+    --bg:#0f1113; --card:#161718; --muted:#9aa0a6; --accent:#e6e6e6; --glass: rgba(255,255,255,0.03);
+    --radius:12px; --maxw:1200px; --gap:20px; --accent-2:#bdbdbd; --focus:2px solid rgba(255,255,255,0.08);
   }
-  [data-theme="light"]{
-    --bg:#f6f7f8;--card:#ffffff;--muted:#54606a;--accent:#0b0b0b;--glass: rgba(0,0,0,0.03);--accent-2:#3b3b3b;--focus: 2px solid rgba(0,0,0,0.08);
+  [data-theme="light"] {
+    --bg:#f6f7f8; --card:#ffffff; --muted:#54606a; --accent:#0b0b0b; --glass:rgba(0,0,0,0.03); --accent-2:#3b3b3b; --focus:2px solid rgba(0,0,0,0.08);
   }
-  *{box-sizing:border-box}html,body{height:100%}body{
-    margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,var(--bg),#0b0c0d);
-    color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;padding:28px;
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,var(--bg),#0b0c0d);
+    color:var(--accent); line-height:1.5; padding:28px; -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:var(--gap)}
-  header{display:flex;gap:16px;align-items:center;justify-content:space-between;background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));padding:18px;border-radius:var(--radius);backdrop-filter:blur(6px);box-shadow:0 8px 28px rgba(0,0,0,0.55)}
+  header{
+    display:flex; gap:16px; align-items:center; justify-content:space-between; background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));
+    padding:18px; border-radius:var(--radius); backdrop-filter:blur(6px); box-shadow:0 8px 28px rgba(0,0,0,0.55); flex-wrap:wrap;
+  }
   .brand{display:flex;gap:12px;align-items:center}
   .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#0b0c0d,#101214);display:grid;place-items:center;font-weight:700;font-size:20px;color:var(--accent);border:1px solid rgba(255,255,255,0.03)}
-  h1{font-size:18px;margin:0}p.lead{margin:0;color:var(--muted);font-size:13px}
+  h1{font-size:18px;margin:0}
+  .lead{margin:0;color:var(--muted);font-size:13px}
   nav.topnav{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
   nav.topnav a, .btn{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-size:14px;border:1px solid transparent}
-  nav.topnav a:hover{background:var(--glass);color:var(--accent)}.btn{background:#0b0c0d;color:var(--accent);border:1px solid rgba(255,255,255,0.04);font-weight:600}.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-  .theme-toggle, .new-guide-link{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);cursor:pointer;color:var(--accent);font-size:14px;text-decoration:none}
-  .theme-toggle:hover, .new-guide-link:hover{background:var(--glass)}
-  main{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:18px}@media (max-width:980px){main{grid-template-columns:1fr}}.content{background:var(--card);padding:28px;border-radius:12px}.aside{position:sticky;top:26px;height:fit-content;padding:18px;background:var(--card);border-radius:12px}.section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}.section:last-child{border-bottom:0}
+  nav.topnav a:hover{background:var(--glass);color:var(--accent)}
+  .btn{background:#0b0c0d;color:var(--accent);border:1px solid rgba(255,255,255,0.04);font-weight:600}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+  .theme-toggle, .nav-link{
+    background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:30px;
+    cursor:pointer;color:var(--accent);font-size:14px;text-decoration:none;display:inline-block;
+  }
+  .theme-toggle:hover, .nav-link:hover{background:var(--glass)}
+  main{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:18px}
+  @media (max-width:980px){main{grid-template-columns:1fr}}
+  .content{background:var(--card);padding:28px;border-radius:12px}
+  .aside{position:sticky;top:26px;height:fit-content;padding:18px;background:var(--card);border-radius:12px}
+  .section{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.02)}.section:last-child{border-bottom:0}
   h2{margin:0 0 10px 0;font-size:20px}h3{margin:8px 0;font-size:16px}.muted{color:var(--muted);font-size:14px}
   pre.code{background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02));padding:12px;border-radius:8px;overflow:auto;border:1px solid rgba(255,255,255,0.03);color:#d6d6d6;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono",monospace;font-size:13px}
   code.inline{background:rgba(255,255,255,0.02);padding:2px 6px;border-radius:6px;color:var(--accent-2);font-family:ui-monospace;font-size:13px}
-  ol.steps{padding-left:18px}li.step{margin:10px 0}.localnav{display:flex;flex-direction:column;gap:8px}.localnav a{color:var(--muted);text-decoration:none;padding:8px;border-radius:8px}.localnav a:hover{background:var(--glass);color:var(--accent)}footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}.badge{display:inline-flex;gap:8px;align-items:center;padding:6px 8px;background:rgba(255,255,255,0.02);border-radius:999px;font-size:13px;border:1px solid rgba(255,255,255,0.02)}
-  table.compare{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}table.compare th,table.compare td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}table.compare th{color:var(--muted);font-weight:600;font-size:13px}table.compare td{vertical-align:top}
+  ol.steps{padding-left:18px}li.step{margin:10px 0}
+  .localnav{display:flex;flex-direction:column;gap:8px}
+  .localnav a{color:var(--muted);text-decoration:none;padding:8px;border-radius:8px}
+  .localnav a:hover{background:var(--glass);color:var(--accent)}
+  footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  .badge{display:inline-flex;gap:8px;align-items:center;padding:6px 8px;background:rgba(255,255,255,0.02);border-radius:999px;font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+  table.compare{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+  table.compare th,table.compare td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}
+  table.compare th{color:var(--muted);font-weight:600;font-size:13px}
   .note{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;color:var(--muted);font-size:13px;border:1px solid rgba(255,255,255,0.02);margin-top:8px}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media (max-width:760px){.two-col{grid-template-columns:1fr}}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:760px){.two-col{grid-template-columns:1fr}}
   .kbd{background:rgba(255,255,255,0.03);padding:4px 8px;border-radius:6px;font-family:ui-monospace;color:var(--accent-2);font-size:13px}
-  /* прелоадер */
+  /* Прелоадер — улучшенная анимация */
   #preloader {
     position: fixed;
     top: 0;
@@ -50,33 +73,75 @@
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     pointer-events: none;
+    backdrop-filter: blur(2px);
   }
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgba(255,255,255,0.1);
-    border-top-color: var(--accent);
+  .loader-content {
+    text-align: center;
+    transform: scale(0.9);
+    animation: popIn 0.4s ease-out forwards;
+  }
+  .loader-logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 28px;
+    display: grid;
+    place-items: center;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--bg);
+    margin: 0 auto 20px;
+    animation: float 1.5s ease-in-out infinite;
+  }
+  .loader-text {
+    font-size: 14px;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    margin-top: 16px;
+  }
+  .loader-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  .loader-dots span {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    display: inline-block;
+    animation: bounce 1.4s infinite ease-in-out both;
   }
-  [data-theme="light"] .spinner {
-    border-top-color: var(--accent);
-    border: 4px solid rgba(0,0,0,0.1);
-    border-top-color: #0b0b0b;
+  .loader-dots span:nth-child(1) { animation-delay: -0.32s; }
+  .loader-dots span:nth-child(2) { animation-delay: -0.16s; }
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
   }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
   }
 </style>
 </head>
 <body>
 <div id="preloader">
-  <div class="spinner"></div>
+  <div class="loader-content">
+    <div class="loader-logo">🐙</div>
+    <div class="loader-text">Загрузка руководства</div>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
+  </div>
 </div>
-<div class="wrap" id="app" style="opacity:0; transition: opacity 0.3s ease;">
+<div class="wrap" id="app" style="opacity:0; transition: opacity 0.5s ease;">
   <header>
     <div class="brand">
       <div class="logo" aria-hidden="true">GH</div>
@@ -85,7 +150,6 @@
         <p class="lead">Глубокий справочник по Git и GitHub: от основ до CI/CD и релизов</p>
       </div>
     </div>
-
     <nav class="topnav" aria-label="Главная навигация">
       <a href="#about">О Git & GitHub</a>
       <a href="#features">Функции</a>
@@ -95,7 +159,8 @@
       <a href="#releases">Релизы & Packages</a>
       <a href="#best">Практики</a>
       <a class="btn" id="openGithub" href="https://github.com" target="_blank" rel="noopener">Открыть GitHub</a>
-      <a class="new-guide-link" href="other-guides.html" target="_blank" rel="noopener">✨ Новые гайды</a>
+      <a class="nav-link" href="other-guides.html">✨ Новые гайды</a>
+      <a class="nav-link" href="advanced-guides.html">🚀 Продвинутые гайды</a>
       <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌓</button>
     </nav>
   </header>
@@ -105,119 +170,19 @@
       <section id="about" class="section" aria-labelledby="aboutTitle">
         <h2 id="aboutTitle">Кратко о Git и GitHub</h2>
         <p class="muted">Git — распределённая система контроля версий. GitHub — сервис поверх Git, добавляющий веб-интерфейс, совместную работу (PR), управление задачами и интеграции. Вместе они позволяют отслеживать изменения, работать над фичами и организовать автоматизацию от тестов до деплоя.</p>
-        <div class="two-col" style="margin-top:12px">
-          <div>
-            <h3>Основные понятия</h3>
-            <ul>
-              <li><strong>Commit:</strong> зафиксированное изменение с метаданными.</li>
-              <li><strong>Branch:</strong> независимая линия разработки.</li>
-              <li><strong>Merge:</strong> слияние изменений из одной ветки в другую.</li>
-              <li><strong>Remote:</strong> удалённый репозиторий (например, origin).</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Почему это полезно</h3>
-            <ul>
-              <li>История изменений и откат на любой шаг.</li>
-              <li>Параллельная работа в ветках без конфликтов в основном коде.</li>
-              <li>Автоматизация тестов и деплоя через Actions.</li>
-            </ul>
-          </div>
-        </div>
+        <div class="two-col" style="margin-top:12px"><div><h3>Основные понятия</h3><ul><li><strong>Commit:</strong> зафиксированное изменение с метаданными.</li><li><strong>Branch:</strong> независимая линия разработки.</li><li><strong>Merge:</strong> слияние изменений из одной ветки в другую.</li><li><strong>Remote:</strong> удалённый репозиторий (например, origin).</li></ul></div><div><h3>Почему это полезно</h3><ul><li>История изменений и откат на любой шаг.</li><li>Параллельная работа в ветках без конфликтов в основном коде.</li><li>Автоматизация тестов и деплоя через Actions.</li></ul></div></div>
       </section>
-
-      <section id="features" class="section" aria-labelledby="featuresTitle">
-        <h2 id="featuresTitle">Развернутый обзор функций GitHub</h2>
-        <ul>
-          <li><strong>Репозитории:</strong> public/private, шаблоны, форки.</li>
-          <li><strong>Issues & Projects:</strong> управление задачами, доски Kanban.</li>
-          <li><strong>Pull Requests:</strong> обсуждения, ревью, CI — централизованный процесс вливания изменений.</li>
-          <li><strong>Actions:</strong> workflow, matrix builds, deployment pipelines.</li>
-          <li><strong>Packages:</strong> npm/Maven/Docker registry под управлением GitHub Packages.</li>
-          <li><strong>Security:</strong> Dependabot alerts, code scanning, secret scanning.</li>
-          <li><strong>Pages & Wiki:</strong> документация проекта и хостинг статических сайтов.</li>
-          <li><strong>Organizations & Teams:</strong> управление доступом и политиками безопасности.</li>
-        </ul>
-      </section>
-
-      <section id="upload" class="section" aria-labelledby="uploadTitle">
-        <h2 id="uploadTitle">Как загружать файлы — варианты, примеры и советы</h2>
-
-        <table class="compare" role="table" aria-label="Сравнение способов загрузки">
-          <thead>…
-          </thead>
-          <tbody>
-             <tr><td><strong>Веб-интерфейс</strong></td><td>Один файл, README, правки от non-dev</td><td>Просто, визуально; не подходит для крупных изменений/истории</td></tr>
-             <tr><td><strong>Git (локально)</strong></td><td>Разработка, ветки, история</td><td>Полный контроль; требует установки Git</td></tr>
-             <tr><td><strong>GitHub CLI (gh)</strong></td><td>Работа в терминале, PR/issue из CLI</td><td>Удобно интегрировать в скрипты; быстрее для power users</td></tr>
-             <tr><td><strong>Git LFS</strong></td><td>Большие бинарные файлы</td><td>Хранит большие файлы отдельно; требуется настройка</td></tr>
-          </tbody>
-        </table>
-
-        <h3>Пошагово: часто используемые сценарии</h3>
-
-        <h4>Создать репозиторий и загрузить проект (git, полный пример)</h4>
-        <pre class="code"># создать папку проекта
+      <section id="features" class="section"><h2>Развернутый обзор функций GitHub</h2><ul><li><strong>Репозитории:</strong> public/private, шаблоны, форки.</li><li><strong>Issues & Projects:</strong> управление задачами, доски Kanban.</li><li><strong>Pull Requests:</strong> обсуждения, ревью, CI — централизованный процесс вливания изменений.</li><li><strong>Actions:</strong> workflow, matrix builds, deployment pipelines.</li><li><strong>Packages:</strong> npm/Maven/Docker registry под управлением GitHub Packages.</li><li><strong>Security:</strong> Dependabot alerts, code scanning, secret scanning.</li><li><strong>Pages & Wiki:</strong> документация проекта и хостинг статических сайтов.</li><li><strong>Organizations & Teams:</strong> управление доступом и политиками безопасности.</li></ul></section>
+      <section id="upload" class="section"><h2>Как загружать файлы — варианты, примеры и советы</h2><table class="compare"><thead>…
+          </thead><tbody><tr><td><strong>Веб-интерфейс</strong></td><td>Один файл, README, правки от non-dev</td><td>Просто, визуально; не подходит для крупных изменений/истории</td></tr><tr><td><strong>Git (локально)</strong></td><td>Разработка, ветки, история</td><td>Полный контроль; требует установки Git</td></tr><tr><td><strong>GitHub CLI (gh)</strong></td><td>Работа в терминале, PR/issue из CLI</td><td>Удобно интегрировать в скрипты; быстрее для power users</td></tr><tr><td><strong>Git LFS</strong></td><td>Большие бинарные файлы</td><td>Хранит большие файлы отдельно; требуется настройка</td></tr></tbody></table><pre class="code"># создать папку проекта
 mkdir my-project && cd my-project
-
-# инициализировать репозиторий
 git init
-
-# добавить файлы и первый коммит
 git add .
 git commit -m "Initial commit"
-
-# создать репозиторий на GitHub (через сайт) или через gh:
-# gh repo create my-project --public --source=. --push
-
-# подключить удалённый
 git remote add origin https://github.com/USERNAME/my-project.git
 git branch -M main
-git push -u origin main
-</pre>
-
-        <h4>Короткие полезные команды</h4>
-        <pre class="code"># увидеть статус
-git status
-
-# отличия
-git diff
-
-# получить изменения с remote и слить
-git pull --rebase
-
-# посмотреть лог
-git log --oneline --graph --decorate --all
-</pre>
-
-        <h4>Git LFS (если большие файлы)</h4>
-        <pre class="code">git lfs install
-git lfs track "*.psd"
-git add .gitattributes
-git add large.psd
-git commit -m "Add large asset"
-git push
-</pre>
-
-        <div class="note"><strong>Совет:</strong> не храните секретные ключи в репозитории — используйте GitHub Secrets и .gitignore.</div>
-      </section>
-
-      <section id="pr" class="section" aria-labelledby="prTitle">
-        <h2 id="prTitle">Pull Requests — руководство для команд</h2>
-        <h3>Что такое PR и зачем</h3>
-        <p class="muted">PR — запрос на вливание изменений из одной ветки в другую с возможностью обсудить, протестировать и просмотреть код. Это ключевой элемент коллективного контроля качества.</p>
-
-        <h3>Процесс открытия качественного PR</h3>
-        <ol class="steps">
-          <li class="step"><strong>Малые изменения:</strong> разделяйте работу на небольшие коммиты и логичные шаги.</li>
-          <li class="step"><strong>Чистый бранч:</strong> создавайте ветку от main: <span class="kbd">git checkout -b feature/short-name</span>.</li>
-          <li class="step"><strong>Описание PR:</strong> поясните цель, изменения, как тестировать и потенциальные последствия.</li>
-          <li class="step"><strong>Автотесты:</strong> убедитесь, что CI проходит; прикрепите тестовые сценарии.</li>
-          <li class="step"><strong>Ревью:</strong> назначьте ревьюеров и отработайте комментарии.</li>
-        </ol>
-
-        <h3>Шаблон PR (пример)</h3>
-        <pre class="code"># Title: Short description
+git push -u origin main</pre><div class="note"><strong>Совет:</strong> не храните секретные ключи в репозитории — используйте GitHub Secrets и .gitignore.</div></section>
+      <section id="pr" class="section"><h2>Pull Requests — руководство для команд</h2><h3>Что такое PR и зачем</h3><p class="muted">PR — запрос на вливание изменений из одной ветки в другую с возможностью обсудить, протестировать и просмотреть код. Это ключевой элемент коллективного контроля качества.</p><h3>Процесс открытия качественного PR</h3><ol class="steps"><li class="step"><strong>Малые изменения:</strong> разделяйте работу на небольшие коммиты и логичные шаги.</li><li class="step"><strong>Чистый бранч:</strong> создавайте ветку от main: <span class="kbd">git checkout -b feature/short-name</span>.</li><li class="step"><strong>Описание PR:</strong> поясните цель, изменения, как тестировать и потенциальные последствия.</li><li class="step"><strong>Автотесты:</strong> убедитесь, что CI проходит; прикрепите тестовые сценарии.</li><li class="step"><strong>Ревью:</strong> назначьте ревьюеров и отработайте комментарии.</li></ol><h3>Шаблон PR (пример)</h3><pre class="code"># Title: Short description
 
 ## Что сделано
 - Короткий перечень изменений
@@ -227,23 +192,13 @@ git push
 
 ## Как проверить
 1. Шаги для локального тестирования
-2. Ожидаемый результат
-</pre>
-      </section>
-
-      <section id="actions" class="section" aria-labelledby="actionsTitle">
-        <h2 id="actionsTitle">GitHub Actions — CI/CD и автоматизация</h2>
-        <p class="muted">Actions позволяет запускать workflow на события: push, PR, schedule и др. Примеры: тесты, линтинг, сборка, релиз и деплой.</p>
-
-        <h3>Пример продвинутого workflow для Node.js с тестами и деплоем на GitHub Pages</h3>
-        <pre class="code">name: CI & Deploy
-
+2. Ожидаемый результат</pre></section>
+      <section id="actions" class="section"><h2>GitHub Actions — CI/CD и автоматизация</h2><p class="muted">Actions позволяет запускать workflow на события: push, PR, schedule и др. Примеры: тесты, линтинг, сборка, релиз и деплой.</p><pre class="code">name: CI & Deploy
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -255,7 +210,6 @@ jobs:
           node-version: '18'
       - run: npm ci
       - run: npm test
-
   build_and_deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -268,29 +222,8 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-</pre>
-
-        <h3>Советы по Actions</h3>
-        <ul>
-          <li>Кэшируйте зависимости (actions/cache) для ускорения билдов.</li>
-          <li>Разделяйте job'ы (test, build, lint) для параллелизации.</li>
-          <li>Минимизируйте секреты и давайте минимальные права токенам.</li>
-        </ul>
-      </section>
-
-      <section id="releases" class="section" aria-labelledby="releasesTitle">
-        <h2 id="releasesTitle">Релизы, пакеты и артефакты</h2>
-        <p class="muted">Используйте Releases для публикации версии: теги, changelog, бинарные артефакты. GitHub Packages позволяет хранить пакеты (npm, Maven, Docker) рядом с кодом.</p>
-
-        <h3>Создание релиза</h3>
-        <ol class="steps">
-          <li class="step">Добавьте тег: <span class="kbd">git tag -a v1.0.0 -m "Release 1.0.0"</span> и запушьте тег: <span class="kbd">git push origin v1.0.0</span>.</li>
-          <li class="step">На GitHub — Releases → Draft a new release → выберите тег, добавьте changelog и прикрепите артефакты.</li>
-        </ol>
-
-        <h3>Пример .gitignore (шаблон)</h3>
-        <pre class="code"># Node
+          publish_dir: ./build</pre><h3>Советы по Actions</h3><ul><li>Кэшируйте зависимости (actions/cache) для ускорения билдов.</li><li>Разделяйте job'ы (test, build, lint) для параллелизации.</li><li>Минимизируйте секреты и давайте минимальные права токенам.</li></ul></section>
+      <section id="releases" class="section"><h2>Релизы, пакеты и артефакты</h2><p class="muted">Используйте Releases для публикации версии: теги, changelog, бинарные артефакты. GitHub Packages позволяет хранить пакеты (npm, Maven, Docker) рядом с кодом.</p><ol class="steps"><li class="step">Добавьте тег: <span class="kbd">git tag -a v1.0.0 -m "Release 1.0.0"</span> и запушьте тег: <span class="kbd">git push origin v1.0.0</span>.</li><li class="step">На GitHub — Releases → Draft a new release → выберите тег, добавьте changelog и прикрепите артефакты.</li></ol><pre class="code"># Node
 node_modules/
 dist/
 .env
@@ -300,56 +233,17 @@ dist/
 
 # Logs
 logs
-*.log
-</pre>
-      </section>
-
-      <section id="best" class="section" aria-labelledby="bestTitle">
-        <h2 id="bestTitle">Организация репозитория и лучшие практики</h2>
-        <ul>
-          <li><strong>README:</strong> подробный, с примерами установки и использования.</li>
-          <li><strong>CONTRIBUTING.md:</strong> правила вклада, формат PR и code style.</li>
-          <li><strong>CODEOWNERS:</strong> кто отвечает за какие части кода.</li>
-          <li><strong>SemVer:</strong> придерживайтесь семантического версионирования.</li>
-          <li><strong>Monorepo vs Multirepo:</strong> выбирайте исходя из команды и жизненного цикла пакетов.</li>
-        </ul>
-
-        <h3>Пример CODEOWNERS</h3>
-        <pre class="code"># Указывать юзеров или команды, ответственных за директории
+*.log</pre></section>
+      <section id="best" class="section"><h2>Организация репозитория и лучшие практики</h2><ul><li><strong>README:</strong> подробный, с примерами установки и использования.</li><li><strong>CONTRIBUTING.md:</strong> правила вклада, формат PR и code style.</li><li><strong>CODEOWNERS:</strong> кто отвечает за какие части кода.</li><li><strong>SemVer:</strong> придерживайтесь семантического версионирования.</li><li><strong>Monorepo vs Multirepo:</strong> выбирайте исходя из команды и жизненного цикла пакетов.</li></ul><h3>Пример CODEOWNERS</h3><pre class="code"># Указывать юзеров или команды, ответственных за директории
 /docs/ @docs-team
-/src/ @frontend-team
-</pre>
-
-        <h3>CONTRIBUTING.md — коротко</h3>
-        <pre class="code"># Contributing
+/src/ @frontend-team</pre><h3>CONTRIBUTING.md — коротко</h3><pre class="code"># Contributing
 
 1. Fork the repo
 2. Create branch feature/your-feature
 3. Add tests
-4. Open PR with description and testing steps
-</pre>
-      </section>
-
-      <section id="troubles" class="section" aria-labelledby="troublesTitle">
-        <h2 id="troublesTitle">Частые ошибки и как их исправлять</h2>
-        <ul>
-          <li><strong>Ошибка:</strong> "remote rejected: file too large" — решение: использовать Git LFS или хранить файлы в релизах/артефактах.</li>
-          <li><strong>Ошибка:</strong> конфликт при merge — решение: локально выполнить rebase/merge и разрешить конфликты, затем push.</li>
-          <li><strong>Ошибка:</strong> случайный коммит секретов — решение: снять секреты с истории (git filter-repo или BFG) и инвалисдить ключи.</li>
-        </ul>
-      </section>
-
-      <section id="extras" class="section" aria-labelledby="extrasTitle">
-        <h2 id="extrasTitle">Полезные ресурсы и ссылки</h2>
-        <ul>
-          <li>Официальная документация Git — справочник по командам.</li>
-          <li>GitHub Docs — описание Actions, Security, Packages и др.</li>
-          <li>Actions Marketplace — готовые шаги и билд-пайплайны.</li>
-          <li>Ресурсы по безопасности: Dependabot и secret scanning.</li>
-        </ul>
-
-        <h3>Короткая шпаргалка команд</h3>
-        <pre class="code"># Clone
+4. Open PR with description and testing steps</pre></section>
+      <section id="troubles" class="section"><h2>Частые ошибки и как их исправлять</h2><ul><li><strong>Ошибка:</strong> "remote rejected: file too large" — решение: использовать Git LFS или хранить файлы в релизах/артефактах.</li><li><strong>Ошибка:</strong> конфликт при merge — решение: локально выполнить rebase/merge и разрешить конфликты, затем push.</li><li><strong>Ошибка:</strong> случайный коммит секретов — решение: снять секреты с истории (git filter-repo или BFG) и инвалисдить ключи.</li></ul></section>
+      <section id="extras" class="section"><h2>Полезные ресурсы и ссылки</h2><ul><li>Официальная документация Git — справочник по командам.</li><li>GitHub Docs — описание Actions, Security, Packages и др.</li><li>Actions Marketplace — готовые шаги и билд-пайплайны.</li><li>Ресурсы по безопасности: Dependabot и secret scanning.</li></ul><h3>Короткая шпаргалка команд</h3><pre class="code"># Clone
 git clone https://github.com/USER/REPO.git
 
 # Create branch
@@ -361,51 +255,17 @@ git pull
 git merge feature/xyz
 
 # Undo local changes
-git restore file.txt
-</pre>
-      </section>
-
-      <footer>
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-          <div class="meta">
-            <span class="badge" aria-hidden="true">GitHub Guide • 2026</span>
-            <span style="color:var(--muted);margin-left:6px">Расширенное руководство для разработчиков и команд</span>
-          </div>
-          <div style="color:var(--muted);font-size:13px">Адаптивный, доступный и практичный</div>
-        </div>
-      </footer>
+git restore file.txt</pre></section>
+      <footer><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><div><span class="badge">GitHub Guide • 2026</span><span style="color:var(--muted);margin-left:6px">Расширенное руководство для разработчиков и команд</span></div><div style="color:var(--muted);font-size:13px">Адаптивный, доступный и практичный</div></div></footer>
     </article>
-
-    <aside class="aside" aria-label="Сайдбар">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <strong>Навигация</strong>
-        <a class="btn ghost" href="#pageContent">Вверх</a>
-      </div>
-
-      <nav class="localnav" aria-label="Внутренняя навигация">
-        <a href="#about">О Git & GitHub</a>
-        <a href="#features">Функции</a>
-        <a href="#upload">Загрузка</a>
-        <a href="#pr">Pull Requests</a>
-        <a href="#actions">Actions</a>
-        <a href="#releases">Релизы</a>
-        <a href="#best">Практики</a>
-        <a href="#troubles">Ошибки</a>
-        <a href="#extras">Ресурсы</a>
-      </nav>
-
-      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px">
-        <h3 style="margin:0 0 8px 0">Быстрые действия</h3>
-        <a class="btn" href="https://github.com/new" target="_blank" rel="noopener">Создать репозиторий</a>
-        <div style="height:8px"></div>
-        <a class="btn ghost" href="https://docs.github.com" target="_blank" rel="noopener">Официальная документация</a>
-      </div>
+    <aside class="aside">
+      <div style="display:flex;justify-content:space-between;margin-bottom:12px"><strong>Навигация</strong><a class="btn ghost" href="#pageContent">Вверх</a></div>
+      <nav class="localnav"><a href="#about">О Git & GitHub</a><a href="#features">Функции</a><a href="#upload">Загрузка</a><a href="#pr">Pull Requests</a><a href="#actions">Actions</a><a href="#releases">Релизы</a><a href="#best">Практики</a><a href="#troubles">Ошибки</a><a href="#extras">Ресурсы</a></nav>
+      <div style="margin-top:14px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px"><h3 style="margin:0 0 8px 0">Быстрые действия</h3><a class="btn" href="https://github.com/new" target="_blank">Создать репозиторий</a><div style="height:8px"></div><a class="btn ghost" href="https://docs.github.com" target="_blank">Официальная документация</a></div>
     </aside>
   </main>
 </div>
-
 <script>
-  // прелоадер
   window.addEventListener('load', function() {
     const preloader = document.getElementById('preloader');
     const content = document.getElementById('app');
@@ -413,17 +273,14 @@ git restore file.txt
     setTimeout(() => {
       preloader.style.display = 'none';
       content.style.opacity = '1';
-    }, 400);
+    }, 500);
   });
-
-  // плавный скролл и тема
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
       const href = a.getAttribute('href'); if(!href || href === '#') return;
       const el = document.querySelector(href); if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(()=>{ el.setAttribute('tabindex','-1'); el.focus({preventScroll:true}); },300); history.replaceState(null,'',href); }
     });
   });
-
   const root=document.documentElement, toggle=document.getElementById('themeToggle'), stored=localStorage.getItem('theme'), prefersLight=window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
   const initTheme=stored || (prefersLight ? 'light' : 'dark'); if(initTheme==='light') root.setAttribute('data-theme','light');
   function toggleTheme(){ const now=root.getAttribute('data-theme')==='light' ? 'dark' : 'light'; if(now==='light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme'); localStorage.setItem('theme',now); }
